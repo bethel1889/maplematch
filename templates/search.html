@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Search
+{% endblock %}
+
+{% block main %}
+    <h1>Search Jobs</h1>
+    <p style="font-size: 20px;">Select your desired options to find fitting jobs</p>
+    <!-- TODO: Create a form for users to submit a name, a month, and a day -->
+    <div style="padding-left: 50px; padding-right: 50px; margin-bottom: 50px;">
+        <form action="/search" method="POST">
+            <div class= "mb-3">
+                <select class="form-select" name="occupation" autofocus required>
+                    <option disabled selected>Occupation</option>
+                    <option>All</option>
+                    {% for occupation in occupations %}
+                        <option>{{ occupation }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <select class="form-select" name="program_stream" required>
+                    <option disabled selected>Program Stream</option>
+                    <option>All</option>
+                    {% for program_stream in PROGRAM_STREAMS %}
+                        <option>{{ program_stream }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <select class="form-select" name="region" required>
+                    <option disabled selected>Region</option>
+                    <option>All</option>
+                    {% for region in REGIONS %}
+                        <option>{{ region }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div  class="mb-3">
+                <input class="btn btn-primary" style="width: 150px" type="submit" value="Search">
+            </div>
+        </form>
+    </div>
+
+
+    {% if jobs %}
+    <h2>Search Results</h2>
+    <div style="margin-left: 50px; margin-right: 50px;">
+        <table class="table">
+            <thead class="table-success">
+                <tr>
+                    <th>S/N</th>
+                    <th>Province/Territory</th>
+                    <th>Occupation</th>
+                    <th>Employer</th>
+                    <th>Address</th>
+                    <th>Program Stream</th>
+                    <th>Approved Positions</th>
+                    <th>Approved LMIA's</th>
+                    <th>Search Google</th>
+                    {% if username %}
+                        <th>Status</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.sn }}</td>
+                        <td>{{ job.region }}</td>
+                        <td>{{ job.occupation }}</td>
+                        <td>{{ job.employer }}</td>
+                        <td>{{ job.address }}</td>
+                        <td>{{ job.program_stream }}</td>
+                        <td>{{ job.approved_position }}</td>
+                        <td>{{ job.approved_lmia }}</td>
+                        <td>
+                            <form action="https://www.google.com/search?" method="get" target="_blank">
+                                <input type="hidden" name="q" value="job opening for {{ job.occupation }} at {{ job.employer }} in {{ job.address }}">
+                                <input class="btn btn-primary" style="width: 100px" type="submit" value="Search">
+                            </form>
+                        </td>
+                        <td>
+                            {% if session["user_id"] %}
+                                <form action="/star" method="post">
+                                    <input type="hidden" name="job_id" value="{{ job.id }}">
+                                    <input class="btn btn-primary" style="width: 100px" type="submit" value="{{ job.star_button }}">
+                                </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}

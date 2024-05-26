@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    HomePage
+{% endblock %}
+
+{% block main %}
+    <div style="font-size: 18px">
+        <h1>Welcome to Maple Match{% if username %} {{ username }}  {% endif %}! <br> Connect with LMIA-approved employers. </h1>
+        <hr>
+        <div>
+            <p>
+                Looking to launch your career in Canada as a foreigner? Maple Match can help! We connect
+                skilled foreign workers with Canadian employers who actively seek qualified
+                candidates and have secured a positive Labour Market Impact Assessment (LMIA).
+                to learn more about LMIA click <a href="/about">here</a>
+            </p>
+            <p>
+                Explore opportunities with or without registration! Browse our extensive job listings of almost 20,000 jobs
+                to find positions that align with your skills and experience. No need to create
+                an account to get started. However, while registration is not mandatory, creating a free account with Maple Match
+                allows you to Bookmark interesting opportunities with our star feature to
+                revisit them easily.
+            </p>
+        </div>
+        <hr>
+        <div>
+            <a class="btn btn-primary" style="width: 150px" href="/search"> Find a Job</a>
+            <a class="btn btn-primary" style="width: 150px" href="/about"> About LMIA</a>
+        </div>
+    </div>
+{% endblock %}

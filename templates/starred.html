@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Saved Jobs
+{% endblock %}
+
+{% block main %}
+<div class="section">
+    <h1 style="font-weight: bold">{{ username }}'s Saved Jobs</h1>
+    <p style="margin-left: 150px; margin-right: 150px; font-size: 25px;">
+        Check the boxes and clickUnsave if you wish to unsave a Job
+    </p>
+    <div style="margin-left: 50px; margin-right: 50px;">
+        <table class="table">
+            <thead class="table-success">
+                <tr>
+                    <th>S/N</th>
+                    <th>Province/Territory</th>
+                    <th>Occupation</th>
+                    <th>Employer</th>
+                    <th>Address</th>
+                    <th>Program Stream</th>
+                    <th>Approved Positions</th>
+                    <th>Approved LMIA's</th>
+                    <th>Search Google</th>
+                    {% if username %}
+                        <th>Status</th>
+                    {% endif %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for job in jobs %}
+                    <tr>
+                        <td>{{ job.sn }}</td>
+                        <td>{{ job.region }}</td>
+                        <td>{{ job.occupation }}</td>
+                        <td>{{ job.employer }}</td>
+                        <td>{{ job.address }}</td>
+                        <td>{{ job.program_stream }}</td>
+                        <td>{{ job.approved_position }}</td>
+                        <td>{{ job.approved_lmia }}</td>
+                        <td>
+                            <form action="https://www.google.com/search?" method="get" target="_blank">
+                                <input type="hidden" name="q" value="job opening for {{ job.occupation }} at {{ job.employer }} in canada">
+                                <input class="btn btn-primary" style="width: 100px" type="submit" value="Search">
+                            </form>
+                        </td>
+                        <td>
+                            <form action="/unstar" method="POST">
+                                <input type="hidden" name="job_id" value="{{ job.id }}">
+                                <input class="btn btn-primary" style="width: 100px" type="submit" value="Unstar">
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
